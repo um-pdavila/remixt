@@ -187,16 +187,21 @@ class BreakpointDatabase(object):
 
 
 def wget_gunzip(url, filename):
-    temp_filename = filename + '.tmp'
-    pypeliner.commandline.execute('wget', url, '-c', '-O', temp_filename + '.gz')
-    pypeliner.commandline.execute('gunzip', temp_filename + '.gz')
-    os.rename(temp_filename, filename)
-
+    if not os.path.exists(filename):
+        temp_filename = filename + '.tmp'
+        pypeliner.commandline.execute('wget', url, '-c', '-O', temp_filename + '.gz')
+        pypeliner.commandline.execute('gunzip', temp_filename + '.gz')
+        os.rename(temp_filename, filename)
+    else:
+        print(f"The file '{filename}' already exists.")
 
 def wget(url, filename):
-    temp_filename = filename + '.tmp'
-    pypeliner.commandline.execute('wget', url, '-c', '-O', temp_filename)
-    os.rename(temp_filename, filename)
+    if not os.path.exists(filename):
+        temp_filename = filename + '.tmp'
+        pypeliner.commandline.execute('wget', url, '-c', '-O', temp_filename)
+        os.rename(temp_filename, filename)
+    else:
+        print(f"The file '{filename}' already exists.")
 
 
 class AutoSentinal(object):
